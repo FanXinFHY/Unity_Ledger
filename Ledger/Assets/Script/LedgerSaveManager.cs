@@ -7,6 +7,7 @@ public static class LedgerSaveManager
     //»ñµÃ´æ´¢Â·¾¶
     private static string GetSaveFilePath()
     {
+        Debug.Log(Path.Combine(Application.persistentDataPath, "LedgerData.json"));
         return Path.Combine(Application.persistentDataPath, "LedgerData.json");
     }
 
@@ -17,15 +18,14 @@ public static class LedgerSaveManager
         {
             string jsonText = File.ReadAllText(GetSaveFilePath());
             AllLedger allLedger = JsonUtility.FromJson<AllLedger>(jsonText);
-            if(allLedger.monthLedgerList == null)
+            if(allLedger == null)
             {
-                allLedger.monthLedgerList = new List<MonthLedger>();
+                allLedger = new AllLedger(new List<MonthLedger>());
             }
             return allLedger;
         }else
         {
-            AllLedger allLedger = new AllLedger();
-            allLedger.monthLedgerList = new List<MonthLedger>();
+            AllLedger allLedger = new AllLedger(new List<MonthLedger>());
             return allLedger;
         }
     }

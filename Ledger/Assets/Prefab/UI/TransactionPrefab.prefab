@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 748837200230901862}
   - component: {fileID: 729227283726496831}
   - component: {fileID: 9150450736961857175}
+  - component: {fileID: 4296295293428889107}
   m_Layer: 5
   m_Name: TransactionPrefab
   m_TagString: Untagged
@@ -79,6 +80,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4296295293428889107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2467766646153422885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e35a9ee78b52f429d308d6a7f3cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dateText: {fileID: 6990187703222924568}
+  amountText: {fileID: 4176329102140274960}
+  remarkText: {fileID: 7558897408593868587}
 --- !u!1 &3481624806699177705
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,27 +10,25 @@ public class AppInit : MonoBehaviour
     void Awake()
     {
         allLedger = LedgerSaveManager.LoadAllLedger();
-        DateTime now = DateTime.Now;
-        string currentMonth = $"{now.Year}.{now.Month}";
-
-        MonthLedger currentMonthLedger = allLedger.monthLedgerList
-            .Find(ledger => ledger.month == currentMonth);
-
-        List<Transaction> currentMonthLedgerList;
-        if(currentMonthLedger != null)
-        {
-            currentMonthLedgerList = currentMonthLedger.transactionList;
-            Debug.Log($"本月账单加载成功，账单数：{currentMonthLedgerList.Count}");
-        }else
-        {
-            currentMonthLedgerList = new List<Transaction>();
-            Debug.Log("本月暂无订单");
-        }
-        UIManager.instance.RefreshMonthLedgerUI(currentMonthLedgerList);
     }
     void Start()
     {
-        
+        //查找并默认显示本月账单
+        DateTime now = DateTime.Now;
+        string currentMonth = $"{now.Year}.{now.Month}";
+
+        MonthLedger currentMonthLedger = allLedger.monthLedgerList.Find(monthledger => monthledger.month == currentMonth);
+
+        if (currentMonthLedger == null)
+        {
+            Debug.Log("本月暂无订单");          
+        }
+        else
+        {      
+            Debug.Log($"本月账单加载成功，账单数：{currentMonthLedger.transactionList.Count}");
+            UIManager.instance.RefreshMonthLedgerUI(currentMonthLedger.transactionList);
+        }
+
     }
 
     // Update is called once per frame
