@@ -26,7 +26,7 @@ public class AppInit : MonoBehaviour
         else
         {      
             Debug.Log($"本月账单加载成功，账单数：{currentMonthLedger.transactionList.Count}");
-            UIManager.instance.RefreshMonthLedgerUI(currentMonthLedger.transactionList);
+            UIManager.instance.RefreshMonthLedgerUI(currentMonthLedger);
         }
 
     }

@@ -19,10 +19,12 @@ public class Transaction
 public class MonthLedger
 {
     public string month;
+    public float plannedSpend;
     public List<Transaction> transactionList;
-    public MonthLedger(string month,List<Transaction> transactionList)
+    public MonthLedger(string month,float plannedSpend, List<Transaction> transactionList)
     {
         this.month = month;
+        this.plannedSpend = plannedSpend;
         this.transactionList = transactionList;
     }
 }

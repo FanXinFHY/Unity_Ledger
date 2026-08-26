@@ -8,10 +8,12 @@ public class TransactionItem : MonoBehaviour
     public Text dateText;
     public Text amountText;
     public Text remarkText;
-    public void SetData(Transaction transaction)
+    public GameObject mask;
+    public void SetData(Transaction transaction,bool isMask)
     {
         dateText.text = $"{transaction.date}";
         amountText.text = $"{transaction.amount}";
         remarkText.text = $"{transaction.remark}";
+        mask.SetActive(isMask);
     }
 }

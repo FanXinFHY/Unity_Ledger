@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,12 +11,13 @@ public class AddTransactionPanel : MonoBehaviour
     public Button cancelButton;
     public Button confirmButton;
     [Header("InputField")]
-    public InputField amountInputField;
-    public InputField remarkInputField;
+    public TMP_InputField amountInputField;
+    public TMP_InputField remarkInputField;
 
     void Start()
     {
-        
+        cancelButton.onClick.AddListener(CancelButton);
+        confirmButton.onClick.AddListener(ConfirmButton);
     }
 
     // Update is called once per frame
@@ -41,19 +43,23 @@ public class AddTransactionPanel : MonoBehaviour
             //创建一个新的Transaction
             DateTime now = DateTime.Now;
             string month = $"{now.Year}.{now.Month}";
-            string day = month + $"{now.Day}";
+            string day = month + $".{now.Day}\n{now.Hour}:{now.Minute}";
             Transaction newTransaction = new Transaction(day, amount, remarkInputField.text);
 
             MonthLedger currentMonthLedger = AppInit.allLedger.monthLedgerList.Find(monthLedger => monthLedger.month == month);
             if (currentMonthLedger == null)
             {
-                currentMonthLedger = new MonthLedger(month,new List<Transaction>());
+                currentMonthLedger = new MonthLedger(month,0f,new List<Transaction>());
                 AppInit.allLedger.monthLedgerList.Add(currentMonthLedger);
             }
             currentMonthLedger.transactionList.Add(newTransaction);
             
             LedgerSaveManager.SaveAllLedger(AppInit.allLedger);
-            UIManager.instance.RefreshMonthLedgerUI(currentMonthLedger.transactionList);
+            UIManager.instance.RefreshMonthLedgerUI(currentMonthLedger);
+
+            amountInputField.text = string.Empty;
+            remarkInputField.text = string.Empty;
+            gameObject.SetActive(false);
         }
         else
         {
