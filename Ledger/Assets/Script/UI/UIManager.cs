@@ -11,7 +11,9 @@ public class UIManager : MonoBehaviour
     public GameObject selectDatePanel;
     [Header("TextMeshProUGUI")]
     public TextMeshProUGUI spentText;
-    public TextMeshProUGUI plannedSpend;
+    public TextMeshProUGUI plannedSpendText;
+    public TextMeshProUGUI availableText;
+    public TextMeshProUGUI dateText;
     [Header("Button")]
     public Button addTransactionButton;
     [Header("Content")]
@@ -55,8 +57,11 @@ public class UIManager : MonoBehaviour
             spent += transaction.amount;
         }
 
-        spentText.text = $"<size=60><cspace=-20px>已消费</cspace></size>{spent}<size=60><cspace=-20px>元</cspace></size>";
-        plannedSpend.text = $"预计花费:{monthLedger.plannedSpend}";
+        dateText.text = $"{monthLedger.month}";
+        spentText.text = $"<size=60><cspace=-20px></cspace></size>{spent}<size=60><cspace=-20px></cspace></size>";
+        plannedSpendText.text = $"预计花费:{monthLedger.plannedSpend}";
+        float availableAmount = (monthLedger.plannedSpend - spent) > 0 ? (monthLedger.plannedSpend - spent) : 0;
+        availableText.text = $"剩余可用:{availableAmount}";
     }
 
     public void AddTransaction()
