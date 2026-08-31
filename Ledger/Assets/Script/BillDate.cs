@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class Transaction
+public enum E_BillType
 {
+    income,
+    expenses,
+}
+[Serializable]
+public class Bill
+{
+    public E_BillType e_BillType;
     public string date;
     public float amount;
     public string remark;
-    public Transaction(string date,float amount,string remark)
+    public Bill(E_BillType e_BillType,string date,float amount,string remark)
     {
+        this.e_BillType = e_BillType;
         this.date = date;
         this.amount = amount;
         this.remark = remark;
@@ -19,13 +27,13 @@ public class Transaction
 public class MonthLedger
 {
     public string month;
-    public float plannedSpend;
-    public List<Transaction> transactionList;
-    public MonthLedger(string month,float plannedSpend, List<Transaction> transactionList)
+    public float plannedExpenses;
+    public List<Bill> billList;
+    public MonthLedger(string month,float plannedExpense, List<Bill> billList)
     {
         this.month = month;
-        this.plannedSpend = plannedSpend;
-        this.transactionList = transactionList;
+        this.plannedExpenses = plannedExpense;
+        this.billList = billList;
     }
 }
 [Serializable]

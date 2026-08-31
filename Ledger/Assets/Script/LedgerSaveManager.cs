@@ -5,9 +5,8 @@ using UnityEngine;
 public static class LedgerSaveManager
 {
     //获得存储路径
-    private static string GetSaveFilePath()
+    public static string GetSaveFilePath()
     {
-        Debug.Log(Path.Combine(Application.persistentDataPath, "LedgerData.json"));
         return Path.Combine(Application.persistentDataPath, "LedgerData.json");
     }
 
@@ -35,5 +34,15 @@ public static class LedgerSaveManager
     {
         string jsontext = JsonUtility.ToJson(allLedger, prettyPrint: true);
         File.WriteAllText(GetSaveFilePath(),jsontext);
+    }
+
+    //清空数据
+    public static void ClearAllSaveData()
+    {
+        if (File.Exists(GetSaveFilePath()))
+        {
+            File.Delete(GetSaveFilePath());
+            Debug.Log("旧存档文件已删除");
+        }
     }
 }

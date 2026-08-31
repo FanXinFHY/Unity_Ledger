@@ -1,26 +1,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class OperationPanel : MonoBehaviour
 {
-    public GameObject transactionListContent;
-    public GameObject operationContent_Up;
-    public GameObject operationContent_Down;
+    public static OperationPanel instance;
+    public Bill currentBill;
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
-        transactionListContent = transform.parent.gameObject;
+        gameObject.SetActive(false); 
     }
 
     // Update is called once per frame
     void Update()
     {
         ClickMask();
-    }
-
-    public void JudgeUpOrDown(RectTransform parentRectTransform)
-    {
-        float middleHeight = parentRectTransform.rect.height / 2f;
     }
 
     public void ClickMask()
@@ -40,15 +45,22 @@ public class OperationPanel : MonoBehaviour
                 // 是否是自己或者自己的子物体(ISChildOf)
                 bool isSelfOrChild = ((clickedGameObject == gameObject) || clickedGameObject.transform.IsChildOf(transform));
 
-                if (isSelfOrChild)
+                if (!isSelfOrChild)
                 {
-                    return;
-                }
-                else
-                {
+                    ResetCyrrebtBill();
                     gameObject.SetActive(false);
                 }
             }
         }
+    }
+
+
+    public void SetCurrentBill(Bill currentBill)
+    {
+        this.currentBill = currentBill;
+    }
+    public void ResetCyrrebtBill()
+    {
+        currentBill = null;
     }
 }

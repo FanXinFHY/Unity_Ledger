@@ -7,19 +7,26 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     [Header("Panel")]
-    public GameObject addTransactionPanel;
+    public GameObject addIncomeBillPanel;
+    public GameObject addExpensesBillPanel;
     public GameObject selectDatePanel;
+    public GameObject operationPanel;
     [Header("TextMeshProUGUI")]
-    public TextMeshProUGUI spentText;
-    public TextMeshProUGUI plannedSpendText;
+    public TextMeshProUGUI expenseText;
+    public TextMeshProUGUI incomeText;
+    public TextMeshProUGUI plannedExpensesText;
     public TextMeshProUGUI availableText;
     public TextMeshProUGUI dateText;
     [Header("Button")]
-    public Button addTransactionButton;
+    public Button addIncomeBillButton;
+    public Button addExpensesBillButton;
     [Header("Content")]
-    public GameObject transactionListContent;
+    public GameObject billListContent;
     [Header("Prefab")]
-    public GameObject transactionPrefab;
+    public GameObject billPrefab;
+    [Header("GameObject")]
+    public GameObject operationContent_Up;
+    public GameObject operationContent_Down;
 
     private void Awake()
     {
@@ -44,29 +51,50 @@ public class UIManager : MonoBehaviour
     public void RefreshMonthLedgerUI(MonthLedger monthLedger)
     {
         bool isMask = false;
-        float spent = 0f;
-        for (int i = transactionListContent.transform.childCount - 1; i >= 0; i--)
+        float income = 0f;
+        float expenses = 0f;
+        for (int i = billListContent.transform.childCount - 1; i >= 0; i--)
         {
-            Destroy(transactionListContent.transform.GetChild(i).gameObject);
+            Destroy(billListContent.transform.GetChild(i).gameObject);
         }
-        foreach (Transaction transaction in monthLedger.transactionList)
+        foreach (Bill bill in monthLedger.billList)
         {
-            GameObject transactionItem = Instantiate(transactionPrefab, transactionListContent.transform);
-            transactionItem.GetComponent<TransactionItem>().SetData(transaction, isMask);
+            GameObject transactionItem = Instantiate(billPrefab, billListContent.transform);
+            transactionItem.GetComponent<BillItem>().SetData(bill, isMask);
             isMask = !isMask;
-            spent += transaction.amount;
+            if(bill.e_BillType == E_BillType.expenses)
+            {
+                expenses += bill.amount;
+            }
+            else
+            {
+                income += bill.amount;
+            }
         }
 
         dateText.text = $"{monthLedger.month}";
-        spentText.text = $"<size=60><cspace=-20px></cspace></size>{spent}<size=60><cspace=-20px></cspace></size>";
-        plannedSpendText.text = $"预计花费:{monthLedger.plannedSpend}";
-        float availableAmount = (monthLedger.plannedSpend - spent) > 0 ? (monthLedger.plannedSpend - spent) : 0;
+        expenseText.text = $"<size=60><cspace=-20px></cspace></size>{expenses}<size=60><cspace=-20px></cspace></size>";
+        incomeText.text = $"<size=60><cspace=-20px></cspace></size>{income}<size=60><cspace=-20px></cspace></size>";
+        plannedExpensesText.text = $"预计花费:{monthLedger.plannedExpenses}";
+        float availableAmount = (monthLedger.plannedExpenses - expenses) > 0 ? (monthLedger.plannedExpenses - expenses) : 0;
         availableText.text = $"剩余可用:{availableAmount}";
     }
 
-    public void AddTransaction()
+    public void SetOperationPanelPosition(Vector3 originalPosition,bool upOrDown)
     {
-
+        Vector3 newPosition = operationPanel.transform.position;
+        newPosition.x = originalPosition.x;
+        newPosition.y = originalPosition.y;
+        operationPanel.transform.position = newPosition;
+        if(upOrDown)
+        {
+            operationContent_Up.SetActive(true);
+            operationContent_Down.SetActive(false);
+        }else
+        {
+            operationContent_Up.SetActive(false);
+            operationContent_Down.SetActive(true);
+        }
+        operationPanel.SetActive(true);
     }
-
 }
