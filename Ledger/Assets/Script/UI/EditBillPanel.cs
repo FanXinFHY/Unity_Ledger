@@ -7,13 +7,15 @@ using UnityEngine.UI;
 
 public class EditBillPanel : MonoBehaviour
 {
-    private Bill currentBill;
     [Header("Button")]
     public Button cancelButton;
     public Button confirmButton;
     [Header("InputField")]
     public TMP_InputField amountInputField;
     public TMP_InputField remarkInputField;
+    [Header("TextMeshProUGUI")]
+    public TextMeshProUGUI amountPlaceholderText;
+    public TextMeshProUGUI remarkPlaceholderText;
 
     void Start()
     {
@@ -22,8 +24,7 @@ public class EditBillPanel : MonoBehaviour
     }
     private void OnEnable()
     {
-        currentBill = OperationPanel.instance.currentBill;
-
+        SetDate(DataManager.instance.GetCurrentBill());
     }
 
     // Update is called once per frame
@@ -34,16 +35,15 @@ public class EditBillPanel : MonoBehaviour
 
     public void SetDate(Bill currentBill)
     {
-        this.currentBill = currentBill;
-        amountInputField.text = currentBill.amount;
-        remarkInputField.text = currentBill.remark;
+        amountPlaceholderText.text = currentBill.amount.ToString();
+        remarkPlaceholderText.text = currentBill.remark;
     }
 
     public void ResetDate()
     {
-        currentBill = null;
         amountInputField.text = string.Empty;
         remarkInputField.text = string.Empty;
+        DataManager.instance.SetCurrentBill(null);
     }
     #region 按钮点击函数
     public void CancelButton()
@@ -55,22 +55,24 @@ public class EditBillPanel : MonoBehaviour
     {
         string amountString = amountInputField.text;
         string remarkString = remarkInputField.text;
+        bool isChange = false;
+        if(amountString != string.Empty)
+        {
+            isChange = true;
+            DataManager.instance.GetCurrentBill().amount = float.Parse(amountString);
+        }
+        if(remarkString != string.Empty)
+        {
+            DataManager.instance.GetCurrentBill().remark = remarkString;
+            isChange = true;
+        }
         //尝试将输入解析为浮点数，成功即创建新记账条，失败则清空输入并提醒
-        if (float.TryParse(amountString, out float amount))
+        if (isChange)
         {
-            currentBill.amount = amount;
-            currentBill.remark = remarkString;
-
-            LedgerSaveManager.SaveAllLedger(AppInit.allLedger);
-            UIManager.instance.RefreshMonthLedgerUI(currentMonthLedger);
-
-            CancelButton();
+            DataManager.SaveAllLedger();
+            UIManager.instance.RefreshBillListContent();
         }
-        else
-        {
-            Debug.Log("请输入正确金额！");
-            amountInputField.text = currentBill.amount; 
-        }
+        CancelButton();
     }
     #endregion
 }

@@ -39,22 +39,20 @@ public class AddIncomeBillPanel : MonoBehaviour
         //尝试将输入解析为浮点数，成功即创建新记账条，失败则清空输入并提醒
         if (float.TryParse(amountString, out float amount))
         {
-            //创建一个新的Transaction
-            DateTime now = DateTime.Now;
-            string month = $"{now.Year}.{now.Month}";
-            string day = month + $".{now.Day}\n{now.Hour}:{now.Minute}";
-            Bill newTransaction = new Bill(E_BillType.income,day, amount, remarkInputField.text);
+            //创建一个新的Bill
+            Bill newBill = new Bill(E_BillType.income,DataManager.day, amount, remarkInputField.text);
 
-            MonthLedger currentMonthLedger = AppInit.allLedger.monthLedgerList.Find(monthLedger => monthLedger.month == month);
+            MonthLedger currentMonthLedger = DataManager.instance.FindMonthLedger(DataManager.month,true);
             if (currentMonthLedger == null)
             {
-                currentMonthLedger = new MonthLedger(month, 0f, new List<Bill>());
-                AppInit.allLedger.monthLedgerList.Add(currentMonthLedger);
+                currentMonthLedger = new MonthLedger(DataManager.month, 0f, new List<Bill>());
+                DataManager.instance.SetCurrentMonthLedger(currentMonthLedger);
+                DataManager.instance.AddNewMonthLedger(currentMonthLedger);
             }
-            currentMonthLedger.billList.Add(newTransaction);
+            DataManager.instance.AddNewBill(newBill);
 
-            LedgerSaveManager.SaveAllLedger(AppInit.allLedger);
-            UIManager.instance.RefreshMonthLedgerUI(currentMonthLedger);
+            DataManager.SaveAllLedger();
+            UIManager.instance.RefreshBillListContent();
 
             amountInputField.text = string.Empty;
             remarkInputField.text = string.Empty;

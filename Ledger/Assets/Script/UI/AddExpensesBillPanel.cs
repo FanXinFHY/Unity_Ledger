@@ -44,18 +44,19 @@ public class AddExpensesBillPanel : MonoBehaviour
             DateTime now = DateTime.Now;
             string month = $"{now.Year}.{now.Month}";
             string day = month + $".{now.Day}\n{now.Hour}:{now.Minute}";
-            Bill newTransaction = new Bill(E_BillType.expenses,day, amount, remarkInputField.text);
+            Bill newBill = new Bill(E_BillType.expenses,day, amount, remarkInputField.text);
 
-            MonthLedger currentMonthLedger = AppInit.allLedger.monthLedgerList.Find(monthLedger => monthLedger.month == month);
+            MonthLedger currentMonthLedger = DataManager.instance.FindMonthLedger(month, true);
             if (currentMonthLedger == null)
             {
                 currentMonthLedger = new MonthLedger(month,0f,new List<Bill>());
-                AppInit.allLedger.monthLedgerList.Add(currentMonthLedger);
+                DataManager.instance.SetCurrentMonthLedger(currentMonthLedger);
+                DataManager.instance.AddNewMonthLedger(currentMonthLedger);
             }
-            currentMonthLedger.billList.Add(newTransaction);
-            
-            LedgerSaveManager.SaveAllLedger(AppInit.allLedger);
-            UIManager.instance.RefreshMonthLedgerUI(currentMonthLedger);
+            DataManager.instance.AddNewBill(newBill);
+
+            DataManager.SaveAllLedger();
+            UIManager.instance.RefreshBillListContent();
 
             amountInputField.text = string.Empty;
             remarkInputField.text = string.Empty;

@@ -29,13 +29,13 @@ public class BillItem : MonoBehaviour
         {
             amountText.color = Color.green;
         }
-        remarkText.text = $"{bill.remark}";
+        remarkText.text = bill.remark;
         mask.SetActive(isMask);
     }
 
     public void OperationButton()
     {
-        OperationPanel.instance.SetCurrentBill(bill);
+        DataManager.instance.SetCurrentBill(bill);
         UIManager.instance.SetOperationPanelPosition(operationButton.transform.position, JudgeUpOrDown());
     }
     public bool JudgeUpOrDown()
