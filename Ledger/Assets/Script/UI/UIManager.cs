@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
             Destroy(billListContent.transform.GetChild(i).gameObject);
         }
         //如果目标月没有记录，则显示空面板并且更新日期按钮显示当月日期
-        if (monthLedger == null)
+        if (monthLedger.billList.Count == 0)
         {
             selectMonthButton.transform.GetComponentInChildren<TextMeshProUGUI>().text = DataManager.month;
             billListEmptyPanel.gameObject.SetActive(true);
