@@ -24,7 +24,7 @@ public class EditBillPanel : MonoBehaviour
     }
     private void OnEnable()
     {
-        SetDate(DataManager.instance.GetCurrentBill());
+        SetDate();
     }
 
     // Update is called once per frame
@@ -33,8 +33,9 @@ public class EditBillPanel : MonoBehaviour
 
     }
 
-    public void SetDate(Bill currentBill)
+    public void SetDate()
     {
+        Bill currentBill = DataManager.instance.FindBill();
         amountPlaceholderText.text = currentBill.amount.ToString();
         remarkPlaceholderText.text = currentBill.remark;
     }
@@ -43,7 +44,7 @@ public class EditBillPanel : MonoBehaviour
     {
         amountInputField.text = string.Empty;
         remarkInputField.text = string.Empty;
-        DataManager.instance.SetCurrentBill(null);
+        DataManager.instance.SetCurrentBillID(-1);
     }
     #region 按钮点击函数
     public void CancelButton()
@@ -59,11 +60,11 @@ public class EditBillPanel : MonoBehaviour
         if(amountString != string.Empty)
         {
             isChange = true;
-            DataManager.instance.GetCurrentBill().amount = float.Parse(amountString);
+            DataManager.instance.FindBill().amount = float.Parse(amountString);
         }
         if(remarkString != string.Empty)
         {
-            DataManager.instance.GetCurrentBill().remark = remarkString;
+            DataManager.instance.FindBill().remark = remarkString;
             isChange = true;
         }
         //尝试将输入解析为浮点数，成功即创建新记账条，失败则清空输入并提醒

@@ -40,7 +40,7 @@ public class AddIncomeBillPanel : MonoBehaviour
         if (float.TryParse(amountString, out float amount))
         {
             //创建一个新的Bill
-            Bill newBill = new Bill(E_BillType.income,DataManager.day, amount, remarkInputField.text);
+            Bill newBill = new Bill(DataManager.instance.GetBillID(),E_BillType.income,DataManager.day, amount, remarkInputField.text);
 
             MonthLedger currentMonthLedger = DataManager.instance.FindMonthLedger(DataManager.month,true);
             if (currentMonthLedger == null)

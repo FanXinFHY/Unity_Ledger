@@ -35,7 +35,7 @@ public class BillItem : MonoBehaviour
 
     public void OperationButton()
     {
-        DataManager.instance.SetCurrentBill(bill);
+        DataManager.instance.SetCurrentBillID(bill.ID);
         UIManager.instance.SetOperationPanelPosition(operationButton.transform.position, JudgeUpOrDown());
     }
     public bool JudgeUpOrDown()

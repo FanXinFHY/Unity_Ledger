@@ -16,7 +16,7 @@ public class MonthButtonItem : MonoBehaviour
     public void MonthButton()
     {
         DataManager.instance.SetCurrentMonthLedger(DataManager.instance.FindMonthLedger(month, true));
-        UIManager.instance.selectMonthPanel.SetActive(false);
         UIManager.instance.RefreshBillListContent();
+        UIManager.instance.selectMonthPanel.SetActive(false);
     }
 }

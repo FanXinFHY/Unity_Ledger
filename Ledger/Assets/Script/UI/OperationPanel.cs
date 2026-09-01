@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class OperationPanel : MonoBehaviour
 {
     public static OperationPanel instance;
-    public Bill currentBill;
     private void Awake()
     {
         if(instance == null)
@@ -47,20 +46,13 @@ public class OperationPanel : MonoBehaviour
 
                 if (!isSelfOrChild)
                 {
-                    ResetCyrrebtBill();
+                    DataManager.instance.SetCurrentBillID(-1);
                     gameObject.SetActive(false);
                 }
             }
         }
     }
 
-
-    public void SetCurrentBill(Bill currentBill)
-    {
-        this.currentBill = currentBill;
-    }
-    public void ResetCyrrebtBill()
-    {
-        currentBill = null;
-    }
+    #region 按钮点击函数
+    #endregion
 }

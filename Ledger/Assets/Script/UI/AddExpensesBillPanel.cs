@@ -44,7 +44,7 @@ public class AddExpensesBillPanel : MonoBehaviour
             DateTime now = DateTime.Now;
             string month = $"{now.Year}.{now.Month}";
             string day = month + $".{now.Day}\n{now.Hour}:{now.Minute}";
-            Bill newBill = new Bill(E_BillType.expenses,day, amount, remarkInputField.text);
+            Bill newBill = new Bill(DataManager.instance.GetBillID(),E_BillType.expenses,day, amount, remarkInputField.text);
 
             MonthLedger currentMonthLedger = DataManager.instance.FindMonthLedger(month, true);
             if (currentMonthLedger == null)

@@ -8,10 +8,9 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
 
-
     private AllLedger allLedger;
-    private MonthLedger currentMonthLedger;
-    private Bill currentBill;
+    public MonthLedger currentMonthLedger;
+    public int currentBillID;
 
     public static string year { get; private set; }
     public static string month { get; private set; }
@@ -19,10 +18,11 @@ public class DataManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
-        }else
+        }
+        else
         {
             Destroy(gameObject);
         }
@@ -33,20 +33,40 @@ public class DataManager : MonoBehaviour
     }
     void Start()
     {
-
+        AppInit();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
+    //App初始化
+    public void AppInit()
+    {
+        Debug.Log($"文件存储路径:{GetSaveFilePath()}");
+        //查找并默认显示本月账单
+        SetAllLedger(LoadAllLedger());
+        currentMonthLedger = FindMonthLedger(month, true);
+        currentBillID = -1;
+        if (currentMonthLedger == null)
+        {
+            Debug.Log("本月暂无订单");
+        }
+        else
+        {
+            Debug.Log($"本月账单加载成功，账单数：{currentMonthLedger.billList.Count}");
+        }
+        UIManager.instance.RefreshBillListContent();
+    }
+
 
     //获得存储路径
     public static string GetSaveFilePath()
     {
         return Path.Combine(Application.persistentDataPath, "LedgerData.json");
     }
+
     //加载数据
     public static AllLedger LoadAllLedger()
     {
@@ -74,23 +94,63 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(GetSaveFilePath(), jsontext);
     }
 
-    //清空数据
-    public static void ClearAllSaveData()
+    //删除数据
+    public void DeleteAllSaveData()
     {
         if (File.Exists(GetSaveFilePath()))
         {
             File.Delete(GetSaveFilePath());
             Debug.Log("旧存档文件已删除");
         }
+        AppInit();
     }
-    public MonthLedger FindMonthLedger(string month,bool isChange)
+    public void DeleteCurrentBill()
+    {
+        int count = currentMonthLedger.billList.RemoveAll(bill => bill.ID == currentBillID);
+        if(count > 0)
+        {
+            Debug.Log($"删除成功！账单ID:{currentBillID}");
+            SaveAllLedger(); 
+            SetAllLedger(LoadAllLedger());
+            currentMonthLedger = FindMonthLedger(month, true);
+            currentBillID = -1;
+            UIManager.instance.RefreshBillListContent();
+        }
+        else
+        {
+            Debug.Log("删除失败！");
+        }
+    }
+
+    //查找指定月账单
+    public MonthLedger FindMonthLedger(string month, bool isChange)
     {
         MonthLedger monthLedger = allLedger.monthLedgerList.Find(monthledger => monthledger.month == month); ;
-        if(isChange)
+        if (isChange)
         {
             currentMonthLedger = monthLedger;
         }
         return monthLedger;
+    }
+
+    //查找单条账单
+    public int GetCurrentBillID()
+    {
+        return currentBillID;
+    }
+    public Bill FindBill()
+    {
+        return currentMonthLedger.billList.Find(bill => bill.ID == currentBillID);
+    }
+    public Bill FindBill(int ID)
+    {
+        return currentMonthLedger.billList.Find(bill =>  bill.ID == ID);
+    }
+
+    //分配订单ID
+    public int GetBillID()
+    {
+        return allLedger.nextBillID++;
     }
 
     public void SetAllLedger(AllLedger allLedger)
@@ -103,7 +163,7 @@ public class DataManager : MonoBehaviour
     }
     public void SetCurrentMonthLedger(MonthLedger currentMonthLedger)
     {
-        this .currentMonthLedger = currentMonthLedger;
+        this.currentMonthLedger = currentMonthLedger;
     }
     public MonthLedger GetCurrentMonthLedger()
     {
@@ -113,16 +173,16 @@ public class DataManager : MonoBehaviour
     {
         allLedger.monthLedgerList.Add(monthLedger);
     }
-    public void SetCurrentBill(Bill newBill)
+    public void SetCurrentBillID(int newBillID)
     {
-        this.currentBill = newBill;
-    }
-    public Bill GetCurrentBill()
-    {
-        return currentBill;
+        this.currentBillID = newBillID;
     }
     public void AddNewBill(Bill newBill)
     {
         currentMonthLedger.billList.Add(newBill);
     }
+
+    #region 按钮点击函数
+
+    #endregion
 }
