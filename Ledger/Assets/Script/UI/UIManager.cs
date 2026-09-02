@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
             return;
         }
         //如果当月有记录，则隐藏空面板并更新相应UI和容器
-        bool isMask = false;
+        bool isMask = true;
         float income = 0f;
         float expenses = 0f;
         billListEmptyPanel.gameObject.SetActive(false);
