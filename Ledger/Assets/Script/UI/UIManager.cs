@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -69,18 +66,24 @@ public class UIManager : MonoBehaviour
         float income = 0f;
         float expenses = 0f;
         billListEmptyPanel.gameObject.SetActive(false);
-        foreach (Bill bill in monthLedger.billList)
+        //刷新账单列表Item
+        int count = monthLedger.billList.Count;
+        if (count > 0)
         {
-            GameObject transactionItem = Instantiate(billPrefab, billListContent.transform);
-            transactionItem.GetComponent<BillItem>().SetData(bill, isMask);
-            isMask = !isMask;
-            if(bill.e_BillType == E_BillType.expenses)
+            for (int i = count - 1; i >= 0; i--)
             {
-                expenses += bill.amount;
-            }
-            else
-            {
-                income += bill.amount;
+                Bill bill = monthLedger.billList[i];
+                GameObject transactionItem = Instantiate(billPrefab, billListContent.transform);
+                transactionItem.GetComponent<BillItem>().SetData(bill, isMask);
+                isMask = !isMask;
+                if (bill.e_BillType == E_BillType.expenses)
+                {
+                    expenses += bill.amount;
+                }
+                else
+                {
+                    income += bill.amount;
+                }
             }
         }
         dateText.text = $"{monthLedger.month}";
