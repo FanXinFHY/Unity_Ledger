@@ -44,8 +44,6 @@ public class DataManager : MonoBehaviour
     //App初始化
     public void AppInit()
     {
-        Application.targetFrameRate = 60;//应用希望跑到60帧
-        QualitySettings.vSyncCount = 0;//关闭垂直同步
         Debug.Log($"文件存储路径:{GetSaveFilePath()}");
         //查找并默认显示本月账单
         SetAllLedger(LoadAllLedger());
