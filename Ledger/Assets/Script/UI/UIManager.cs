@@ -47,12 +47,11 @@ public class UIManager : MonoBehaviour
     public void RefreshBillListContent()
     {
         MonthLedger monthLedger = DataManager.instance.GetCurrentMonthLedger();
+        Layout layout = billListContent.GetComponent<Layout>();
 
         //不管目标月是否有订单记录都清除容器
-        for (int i = billListContent.transform.childCount - 1; i >= 0; i--)
-        {
-            Destroy(billListContent.transform.GetChild(i).gameObject);
-        }
+        layout.ClearContent();
+
         //如果目标月没有记录，则显示空面板并且更新日期按钮显示当月日期
         if (monthLedger == null || monthLedger.billList.Count == 0)
         {
@@ -68,23 +67,21 @@ public class UIManager : MonoBehaviour
         billListEmptyPanel.gameObject.SetActive(false);
         //刷新账单列表Item
         int count = monthLedger.billList.Count;
-        if (count > 0)
+        for (int i = count - 1; i >= 0; i--)
         {
-            for (int i = count - 1; i >= 0; i--)
+            Bill bill = monthLedger.billList[i];
+            GameObject transactionItem = Instantiate(billPrefab, billListContent.transform);
+            transactionItem.GetComponent<BillItem>().SetData(bill, isMask);
+            isMask = !isMask;
+            if (bill.e_BillType == E_BillType.expenses)
             {
-                Bill bill = monthLedger.billList[i];
-                GameObject transactionItem = Instantiate(billPrefab, billListContent.transform);
-                transactionItem.GetComponent<BillItem>().SetData(bill, isMask);
-                isMask = !isMask;
-                if (bill.e_BillType == E_BillType.expenses)
-                {
-                    expenses += bill.amount;
-                }
-                else
-                {
-                    income += bill.amount;
-                }
+                expenses += bill.amount;
             }
+            else
+            {
+                income += bill.amount;
+            }
+            layout.VerticalLayout(billPrefab);
         }
         dateText.text = $"{monthLedger.month}";
         expenseText.text = $"<size=60><cspace=-20px></cspace></size>{expenses}<size=60><cspace=-20px></cspace></size>";
