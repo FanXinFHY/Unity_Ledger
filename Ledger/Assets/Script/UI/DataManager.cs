@@ -12,9 +12,19 @@ public class DataManager : MonoBehaviour
     public MonthLedger currentMonthLedger;
     public int currentBillID;
 
-    public static string year { get; private set; }
-    public static string month { get; private set; }
-    public static string day { get; private set; }
+    [Header("Calculation")]
+    public float totalIncome;
+    public float totalExpenses;
+    public float foodAndDrinkExpenses;
+    public float accommodationExpenses;
+    public float entertainmentExpenses;
+    public float otherExpenses;
+
+    private static string year;
+    private static string month;
+    private static string day;
+    private static string hour;
+    private static string minute;
 
     private void Awake()
     {
@@ -26,28 +36,19 @@ public class DataManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DateTime now = DateTime.Now;
-        year = $"{now.Year}";
-        month = $"{now.Year}.{now.Month}";
-        day = $"{now.Year}.{now.Month}.{now.Day}";
     }
     void Start()
     {
         AppInit();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     //App初始化
     public void AppInit()
     {
         Debug.Log($"文件存储路径:{GetSaveFilePath()}");
         //查找并默认显示本月账单
         SetAllLedger(LoadAllLedger());
-        currentMonthLedger = FindMonthLedger(month, true);
+        currentMonthLedger = FindMonthLedger(GetToMonth(), true);
         currentBillID = -1;
         if (currentMonthLedger == null)
         {
@@ -109,9 +110,10 @@ public class DataManager : MonoBehaviour
         int count = currentMonthLedger.billList.RemoveAll(bill => bill.ID == currentBillID);
         if(count > 0)
         {
-            Debug.Log($"删除成功！账单ID:{currentBillID}");
             SaveAllLedger(); 
             SetAllLedger(LoadAllLedger());
+            Debug.Log($"删除成功！账单ID:{currentBillID}");
+
             currentMonthLedger = FindMonthLedger(month, true);
             currentBillID = -1;
             UIManager.instance.RefreshBillListContent();
@@ -120,6 +122,20 @@ public class DataManager : MonoBehaviour
         {
             Debug.Log("删除失败！");
         }
+    }
+    //复制数据
+    public void CopyCurrentBill()
+    {
+        Bill currentBill = FindBill();
+        Bill copyBill = new Bill(GetBillID(),currentBill.e_BillType, currentBill.e_BillCategory,GetToMinute(),currentBill.amount,currentBill.remark);
+        AddNewBill(copyBill);
+        SaveAllLedger();
+        SetAllLedger(LoadAllLedger());
+        Debug.Log($"复制成功！账单ID:{currentBillID}");
+
+        currentMonthLedger = FindMonthLedger(month, true);
+        currentBillID = -1;
+        UIManager.instance.RefreshBillListContent();
     }
 
     //查找指定月账单
@@ -153,6 +169,43 @@ public class DataManager : MonoBehaviour
         return allLedger.nextBillID++;
     }
 
+    //账单数据计算
+    public void computeData()
+    {
+        totalIncome = 0;
+        totalExpenses = 0;
+        foodAndDrinkExpenses = 0;
+        accommodationExpenses = 0;
+        entertainmentExpenses = 0;
+        otherExpenses = 0;
+        foreach(Bill bill in GetCurrentMonthLedger().billList)
+        {
+            if(bill.e_BillType == E_BillType.expenses)
+            {
+                totalExpenses += bill.amount;
+                if(bill.e_BillCategory == E_BillCategory.foodAndDrink)
+                {
+                    foodAndDrinkExpenses += bill.amount;
+                    continue;
+                }
+                if (bill.e_BillCategory == E_BillCategory.accommodation)
+                {
+                    accommodationExpenses += bill.amount;
+                    continue;
+                }
+                if (bill.e_BillCategory == E_BillCategory.entertainment)
+                {
+                    entertainmentExpenses += bill.amount;
+                    continue;
+                }
+                otherExpenses += bill.amount;
+                continue;
+            }
+
+            totalIncome += bill.amount;
+        }
+    }
+
     public void SetAllLedger(AllLedger allLedger)
     {
         this.allLedger = allLedger;
@@ -181,6 +234,52 @@ public class DataManager : MonoBehaviour
     {
         currentMonthLedger.billList.Add(newBill);
     }
+
+    #region 获取日期
+    public static string GetYear()
+    {
+        DateTime now = DateTime.Now;
+        return year = $"{now.Year}";
+    }
+    public static string GetMonth()
+    {
+        DateTime now = DateTime.Now;
+        return month = $"{now.Month}";
+    }
+    public static string GetToMonth()
+    {
+        DateTime now = DateTime.Now;
+        return month = $"{now.Year}.{now.Month}";
+    }
+    public static string GetDay()
+    {
+        DateTime now = DateTime.Now;
+        return day = $"{now.Day}";
+    }
+    public static string GetToDay()
+    {
+        DateTime now = DateTime.Now;
+        return day = $"{now.Year}.{now.Month}.{now.Day}";
+    }
+    public static string GetHour()
+    {
+        DateTime now = DateTime.Now;
+        return day = $"{now.Hour}";
+    }
+
+    public static string GetMinute()
+    {
+        DateTime now = DateTime.Now;
+        return minute = $"{now.Minute}";
+
+    }
+    public static string GetToMinute()
+    {
+        DateTime now = DateTime.Now;
+        return minute = $"{now.Year}.{now.Month}.{now.Day}\n{now.Hour}:{now.Minute}";
+
+    }
+    #endregion
 
     #region 按钮点击函数
 

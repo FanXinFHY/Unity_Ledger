@@ -13,7 +13,8 @@ public class AddExpensesBillPanel : MonoBehaviour
     [Header("InputField")]
     public TMP_InputField amountInputField;
     public TMP_InputField remarkInputField;
-
+    [Header("Other")]
+    public CategoryTagList categoryTagList;
     void Start()
     {
         cancelButton.onClick.AddListener(CancelButton);
@@ -41,15 +42,12 @@ public class AddExpensesBillPanel : MonoBehaviour
         if(float.TryParse(amountString, out float amount))
         {
             //创建一个新的Transaction
-            DateTime now = DateTime.Now;
-            string month = $"{now.Year}.{now.Month}";
-            string day = month + $".{now.Day}\n{now.Hour}:{now.Minute}";
-            Bill newBill = new Bill(DataManager.instance.GetBillID(),E_BillType.expenses,day, amount, remarkInputField.text);
+            Bill newBill = new Bill(DataManager.instance.GetBillID(),E_BillType.expenses,categoryTagList.GetBillCategory(),DataManager.GetToMinute(), amount, remarkInputField.text);
 
-            MonthLedger currentMonthLedger = DataManager.instance.FindMonthLedger(month, true);
+            MonthLedger currentMonthLedger = DataManager.instance.FindMonthLedger(DataManager.GetToMonth(), true);
             if (currentMonthLedger == null)
             {
-                currentMonthLedger = new MonthLedger(month,0f,new List<Bill>());
+                currentMonthLedger = new MonthLedger(DataManager.GetToMonth(), 0f,new List<Bill>());
                 DataManager.instance.SetCurrentMonthLedger(currentMonthLedger);
                 DataManager.instance.AddNewMonthLedger(currentMonthLedger);
             }
@@ -60,6 +58,8 @@ public class AddExpensesBillPanel : MonoBehaviour
 
             amountInputField.text = string.Empty;
             remarkInputField.text = string.Empty;
+            categoryTagList.Reset();
+
             gameObject.SetActive(false);
         }
         else

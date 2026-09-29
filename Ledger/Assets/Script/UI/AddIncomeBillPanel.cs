@@ -12,6 +12,8 @@ public class AddIncomeBillPanel : MonoBehaviour
     [Header("InputField")]
     public TMP_InputField amountInputField;
     public TMP_InputField remarkInputField;
+    [Header("Other")]
+    public CategoryTagList categoryTagList;
 
     void Start()
     {
@@ -40,12 +42,12 @@ public class AddIncomeBillPanel : MonoBehaviour
         if (float.TryParse(amountString, out float amount))
         {
             //创建一个新的Bill
-            Bill newBill = new Bill(DataManager.instance.GetBillID(),E_BillType.income,DataManager.day, amount, remarkInputField.text);
+            Bill newBill = new Bill(DataManager.instance.GetBillID(),E_BillType.income, categoryTagList.GetBillCategory(), DataManager.GetToMinute(), amount, remarkInputField.text);
 
-            MonthLedger currentMonthLedger = DataManager.instance.FindMonthLedger(DataManager.month,true);
+            MonthLedger currentMonthLedger = DataManager.instance.FindMonthLedger(DataManager.GetToMonth(), true);
             if (currentMonthLedger == null)
             {
-                currentMonthLedger = new MonthLedger(DataManager.month, 0f, new List<Bill>());
+                currentMonthLedger = new MonthLedger(DataManager.GetToMonth(), 0f, new List<Bill>());
                 DataManager.instance.SetCurrentMonthLedger(currentMonthLedger);
                 DataManager.instance.AddNewMonthLedger(currentMonthLedger);
             }
@@ -55,7 +57,9 @@ public class AddIncomeBillPanel : MonoBehaviour
             UIManager.instance.RefreshBillListContent();
 
             amountInputField.text = string.Empty;
-            remarkInputField.text = string.Empty;
+            remarkInputField.text = string.Empty; 
+            categoryTagList.Reset();
+
             gameObject.SetActive(false);
         }
         else

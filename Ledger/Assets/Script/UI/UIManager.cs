@@ -53,17 +53,14 @@ public class UIManager : MonoBehaviour
         layout.ClearContent();
 
         //如果目标月没有记录，则显示空面板并且更新日期按钮显示当月日期
-        if (monthLedger == null || monthLedger.billList.Count == 0)
+        if (monthLedger == null || monthLedger.billList.Count == 0) 
         {
-            selectMonthButton.transform.GetComponentInChildren<TextMeshProUGUI>().text = DataManager.month;
+            selectMonthButton.transform.GetComponentInChildren<TextMeshProUGUI>().text = DataManager.GetToMonth();
             billListEmptyPanel.gameObject.SetActive(true);
             Debug.Log("月账单刷新成功！");
             return;
         }
         //如果当月有记录，则隐藏空面板并更新相应UI和容器
-        bool isMask = true;
-        float income = 0f;
-        float expenses = 0f;
         billListEmptyPanel.gameObject.SetActive(false);
         //刷新账单列表Item
         int count = monthLedger.billList.Count;
@@ -71,24 +68,14 @@ public class UIManager : MonoBehaviour
         {
             Bill bill = monthLedger.billList[i];
             GameObject transactionItem = Instantiate(billPrefab, billListContent.transform);
-            transactionItem.GetComponent<BillItem>().SetData(bill, isMask);
-            isMask = !isMask;
-            if (bill.e_BillType == E_BillType.expenses)
-            {
-                expenses += bill.amount;
-            }
-            else
-            {
-                income += bill.amount;
-            }
+            transactionItem.GetComponent<BillItem>().SetData(bill);
             layout.VerticalLayout(billPrefab);
         }
+        DataManager.instance.computeData();
         dateText.text = $"{monthLedger.month}";
-        expenseText.text = $"<size=60><cspace=-20px></cspace></size>{expenses}<size=60><cspace=-20px></cspace></size>";
-        incomeText.text = $"<size=60><cspace=-20px></cspace></size>{income}<size=60><cspace=-20px></cspace></size>";
+        expenseText.text = $"<size=60><cspace=-20px></cspace></size>{DataManager.instance.totalExpenses}<size=60><cspace=-20px></cspace></size>";
+        incomeText.text = $"<size=60><cspace=-20px></cspace></size>{DataManager.instance.totalIncome}<size=60><cspace=-20px></cspace></size>";
         plannedExpensesText.text = $"预计花费:{monthLedger.plannedExpenses}";
-        float availableAmount = (monthLedger.plannedExpenses - expenses) > 0 ? (monthLedger.plannedExpenses - expenses) : 0;
-        availableText.text = $"剩余可用:{availableAmount}";
 
         Debug.Log("月账单刷新成功！");
     }
@@ -101,10 +88,10 @@ public class UIManager : MonoBehaviour
         }
 
         int count = DataManager.instance.GetAllLedger().monthLedgerList.Count;
-        if(DataManager.instance.GetAllLedger().monthLedgerList.Count == 0|| DataManager.instance.GetAllLedger().monthLedgerList[count-1].month != DataManager.month)
+        if(DataManager.instance.GetAllLedger().monthLedgerList.Count == 0|| DataManager.instance.GetAllLedger().monthLedgerList[count-1].month != DataManager.GetToMonth())
         {
             GameObject transactionItem = Instantiate(monthButtonPrefab, monthButtonListContent.transform);
-            transactionItem.GetComponent<MonthButtonItem>().SetData(DataManager.month);
+            transactionItem.GetComponent<MonthButtonItem>().SetData(DataManager.GetToMonth());
         }
         for (int i = count - 1; i >= 0 ;i--)
         {

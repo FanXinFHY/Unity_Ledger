@@ -7,20 +7,23 @@ using UnityEngine.UI;
 public class BillItem : MonoBehaviour
 {
     private Bill bill;
+    public Image tagIcon;
     public TextMeshProUGUI dateText;
     public TextMeshProUGUI amountText;
     public TextMeshProUGUI remarkText;
     public Button operationButton;
     private RectTransform rectTransform;
-    [Header("GameObject")]
-    public GameObject mask;
-
+    [Header("TagIcon")]
+    public Sprite otherIcon;
+    public Sprite foodAndDrinkIcon;
+    public Sprite accommodationIcon;
+    public Sprite entertainmentIcon;
     public void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         operationButton.onClick.AddListener(() => OperationButton());
     }
-    public void SetData(Bill bill,bool isMask)
+    public void SetData(Bill bill)
     {
         this.bill = bill;
         dateText.text = $"{bill.date}";
@@ -29,8 +32,23 @@ public class BillItem : MonoBehaviour
         {
             amountText.color = Color.green;
         }
+        switch (bill.e_BillCategory)
+        {
+            case E_BillCategory.other: 
+                tagIcon.sprite = otherIcon; 
+                break;
+            case E_BillCategory.foodAndDrink:
+                tagIcon.sprite = foodAndDrinkIcon;
+                break;
+            case E_BillCategory.accommodation:
+                tagIcon.sprite= accommodationIcon;
+                break;
+            case E_BillCategory.entertainment:
+                tagIcon.sprite = entertainmentIcon;
+                break;
+            default:break;
+        }
         remarkText.text = bill.remark;
-        mask.SetActive(isMask);
     }
 
     public void OperationButton()

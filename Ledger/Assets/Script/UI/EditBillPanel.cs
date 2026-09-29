@@ -16,6 +16,9 @@ public class EditBillPanel : MonoBehaviour
     [Header("TextMeshProUGUI")]
     public TextMeshProUGUI amountPlaceholderText;
     public TextMeshProUGUI remarkPlaceholderText;
+    [Header("Other")]
+    public CategoryTagList categoryTagList;
+    private E_BillCategory e_BillCategory;
 
     void Start()
     {
@@ -38,6 +41,8 @@ public class EditBillPanel : MonoBehaviour
         Bill currentBill = DataManager.instance.FindBill();
         amountPlaceholderText.text = currentBill.amount.ToString();
         remarkPlaceholderText.text = currentBill.remark;
+        e_BillCategory = currentBill.e_BillCategory;
+        categoryTagList.SelecteBillCategory(e_BillCategory);
     }
 
     public void ResetDate()
@@ -45,6 +50,7 @@ public class EditBillPanel : MonoBehaviour
         amountInputField.text = string.Empty;
         remarkInputField.text = string.Empty;
         DataManager.instance.SetCurrentBillID(-1);
+        categoryTagList.Reset();
     }
     #region 按钮点击函数
     public void CancelButton()
@@ -65,6 +71,11 @@ public class EditBillPanel : MonoBehaviour
         if(remarkString != string.Empty)
         {
             DataManager.instance.FindBill().remark = remarkString;
+            isChange = true;
+        }
+        if(e_BillCategory != categoryTagList.GetBillCategory())
+        {
+            DataManager.instance.FindBill().e_BillCategory = categoryTagList.GetBillCategory();
             isChange = true;
         }
         //尝试将输入解析为浮点数，成功即创建新记账条，失败则清空输入并提醒

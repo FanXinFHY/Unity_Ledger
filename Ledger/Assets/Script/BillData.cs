@@ -9,18 +9,29 @@ public enum E_BillType
     expenses,
 }
 [Serializable]
+public enum E_BillCategory
+{
+    other,
+    foodAndDrink,
+    accommodation,
+    entertainment,
+}
+
+[Serializable]
 public class Bill
 {
     public int ID;
     public E_BillType e_BillType;
+    public E_BillCategory e_BillCategory;
     public string date;
     public float amount;
     public string remark;
     public Bill() { }
-    public Bill(int ID, E_BillType e_BillType,string date,float amount,string remark)
+    public Bill(int ID, E_BillType e_BillType, E_BillCategory e_BillCategory,string date,float amount,string remark)
     {
         this.ID = ID;
         this.e_BillType = e_BillType;
+        this.e_BillCategory = e_BillCategory;
         this.date = date;
         this.amount = amount;
         this.remark = remark;
