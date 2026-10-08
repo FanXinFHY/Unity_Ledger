@@ -11,9 +11,11 @@ public class CategoryDataPanel : MonoBehaviour
     public Button accommodationButton;
     public Button entertainmentButton;
     public Button otherButton;
+    [Header("Text")]
+    public TextMeshProUGUI percentText;
+    public TextMeshProUGUI tipText;
     [Header("Other")]
     public Image barImage;
-    public TextMeshProUGUI percentText;
     private Tween numberTween;
     private float currentPercent;
 
@@ -22,8 +24,13 @@ public class CategoryDataPanel : MonoBehaviour
         foodAndDrinkButton.onClick.AddListener(() => SetBarTargetPercent(DataManager.instance.foodAndDrinkExpenses));
         accommodationButton.onClick.AddListener(() => SetBarTargetPercent(DataManager.instance.accommodationExpenses));
         entertainmentButton.onClick.AddListener(() => SetBarTargetPercent(DataManager.instance.entertainmentExpenses));
-        otherButton.onClick.AddListener(() => SetBarTargetPercent(DataManager.instance.otherExpenses));
+        otherButton.onClick.AddListener(() => SetBarTargetPercent(DataManager.instance.otherExpenses)); 
+        foodAndDrinkButton.onClick.AddListener(() => SetTipText("吃喝", DataManager.instance.foodAndDrinkExpenses));
+        accommodationButton.onClick.AddListener(() => SetTipText("住宿",DataManager.instance.accommodationExpenses));
+        entertainmentButton.onClick.AddListener(() => SetTipText("娱乐",DataManager.instance.entertainmentExpenses));
+        otherButton.onClick.AddListener(() => SetTipText("其它",DataManager.instance.otherExpenses));
         SetBarTargetPercent(DataManager.instance.foodAndDrinkExpenses);
+        SetTipText("吃喝", DataManager.instance.foodAndDrinkExpenses);
     }
 
     // Update is called once per frame
@@ -60,5 +67,9 @@ public class CategoryDataPanel : MonoBehaviour
                 percentText.text = $"{(targetPercent * 100).ToString("F2")}%";
                 barImage.fillAmount = targetPercent;
             });
+    }
+    public void SetTipText(string categoryTag,float number)
+    {
+        tipText.text = $"本月<u>{categoryTag}</u>累计花费<u>{number}</u>元。";
     }
 }

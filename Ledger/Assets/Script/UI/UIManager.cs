@@ -56,6 +56,8 @@ public class UIManager : MonoBehaviour
         if (monthLedger == null || monthLedger.billList.Count == 0) 
         {
             selectMonthButton.transform.GetComponentInChildren<TextMeshProUGUI>().text = DataManager.GetToMonth();
+            expenseText.text = "0";
+            incomeText.text = "0";
             billListEmptyPanel.gameObject.SetActive(true);
             Debug.Log("月账单刷新成功！");
             return;
@@ -88,7 +90,7 @@ public class UIManager : MonoBehaviour
         }
 
         int count = DataManager.instance.GetAllLedger().monthLedgerList.Count;
-        if(DataManager.instance.GetAllLedger().monthLedgerList.Count == 0|| DataManager.instance.GetAllLedger().monthLedgerList[count-1].month != DataManager.GetToMonth())
+        if(DataManager.instance.GetAllLedger().monthLedgerList.Count == 0 || DataManager.instance.GetAllLedger().monthLedgerList[count-1].month != DataManager.GetToMonth())
         {
             GameObject transactionItem = Instantiate(monthButtonPrefab, monthButtonListContent.transform);
             transactionItem.GetComponent<MonthButtonItem>().SetData(DataManager.GetToMonth());

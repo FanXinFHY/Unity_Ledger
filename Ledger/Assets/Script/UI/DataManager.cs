@@ -20,11 +20,7 @@ public class DataManager : MonoBehaviour
     public float entertainmentExpenses;
     public float otherExpenses;
 
-    private static string year;
-    private static string month;
-    private static string day;
-    private static string hour;
-    private static string minute;
+
 
     private void Awake()
     {
@@ -114,7 +110,6 @@ public class DataManager : MonoBehaviour
             SetAllLedger(LoadAllLedger());
             Debug.Log($"删除成功！账单ID:{currentBillID}");
 
-            currentMonthLedger = FindMonthLedger(month, true);
             currentBillID = -1;
             UIManager.instance.RefreshBillListContent();
         }
@@ -133,16 +128,15 @@ public class DataManager : MonoBehaviour
         SetAllLedger(LoadAllLedger());
         Debug.Log($"复制成功！账单ID:{currentBillID}");
 
-        currentMonthLedger = FindMonthLedger(month, true);
         currentBillID = -1;
         UIManager.instance.RefreshBillListContent();
     }
 
     //查找指定月账单
-    public MonthLedger FindMonthLedger(string month, bool isChange)
+    public MonthLedger FindMonthLedger(string month, bool isToCurrentMonth)
     {
         MonthLedger monthLedger = allLedger.monthLedgerList.Find(monthledger => monthledger.month == month); ;
-        if (isChange)
+        if (isToCurrentMonth)
         {
             currentMonthLedger = monthLedger;
         }
@@ -239,45 +233,57 @@ public class DataManager : MonoBehaviour
     public static string GetYear()
     {
         DateTime now = DateTime.Now;
-        return year = $"{now.Year}";
+        return  $"{now.Year}";
     }
     public static string GetMonth()
     {
         DateTime now = DateTime.Now;
-        return month = $"{now.Month}";
+        return  $"{now.Month}";
     }
     public static string GetToMonth()
     {
         DateTime now = DateTime.Now;
-        return month = $"{now.Year}.{now.Month}";
+        return  $"{now.Year}.{now.Month}";
     }
     public static string GetDay()
     {
         DateTime now = DateTime.Now;
-        return day = $"{now.Day}";
+        return  $"{now.Day}";
     }
     public static string GetToDay()
     {
         DateTime now = DateTime.Now;
-        return day = $"{now.Year}.{now.Month}.{now.Day}";
+        return  $"{now.Year}.{now.Month}.{now.Day}";
     }
     public static string GetHour()
     {
         DateTime now = DateTime.Now;
-        return day = $"{now.Hour}";
+        return  $"{now.Hour}";
     }
 
     public static string GetMinute()
     {
         DateTime now = DateTime.Now;
-        return minute = $"{now.Minute}";
+        if(now.Minute >= 10)
+        {
+            return  $"{now.Minute}";
+        }else
+        {
+            return $"0{now.Minute}";
+        }
 
     }
     public static string GetToMinute()
     {
         DateTime now = DateTime.Now;
-        return minute = $"{now.Year}.{now.Month}.{now.Day}\n{now.Hour}:{now.Minute}";
-
+        if (now.Minute >= 10)
+        {
+            return $"{now.Year}.{now.Month}.{now.Day}\n{now.Hour}:{now.Minute}";
+        }
+        else
+        {
+            return $"{now.Year}.{now.Month}.{now.Day}\n{now.Hour}:0{now.Minute}";
+        }
     }
     #endregion
 
