@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI plannedExpensesText;
     public TextMeshProUGUI availableText;
     public TextMeshProUGUI dateText;
+    public TextMeshProUGUI totalDepositText;
+    public TextMeshProUGUI onlineFundsText;
+    public TextMeshProUGUI cashText;
     [Header("Button")]
     public Button selectMonthButton;
     public Button addIncomeBillButton;
@@ -101,6 +104,13 @@ public class UIManager : MonoBehaviour
             transactionItem.GetComponent<MonthButtonItem>().SetData(DataManager.instance.GetAllLedger().monthLedgerList[i].month);
         }
         Debug.Log("所有月订单刷新成功！");
+    }
+
+    public void RefreshTotalDeposit()
+    {
+        totalDepositText.text = $"{DataManager.instance.getTotalDeposit()}";
+        onlineFundsText.text = $"{DataManager.instance.getOnlineFunds()}";
+        cashText.text = $"{DataManager.instance.getCash()}";
     }
 
     public void SetOperationPanelPosition(Vector3 originalPosition,bool upOrDown)

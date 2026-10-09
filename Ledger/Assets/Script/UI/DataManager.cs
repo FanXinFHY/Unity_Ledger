@@ -55,6 +55,7 @@ public class DataManager : MonoBehaviour
             Debug.Log($"本月账单加载成功，账单数：{currentMonthLedger.billList.Count}");
         }
         UIManager.instance.RefreshBillListContent();
+        UIManager.instance.RefreshTotalDeposit();
     }
 
 
@@ -124,6 +125,7 @@ public class DataManager : MonoBehaviour
         Bill currentBill = FindBill();
         Bill copyBill = new Bill(GetBillID(),currentBill.e_BillType, currentBill.e_BillCategory,GetToMinute(),currentBill.amount,currentBill.remark);
         AddNewBill(copyBill);
+        //computeTotalDeposit(copyBill);
         SaveAllLedger();
         SetAllLedger(LoadAllLedger());
         Debug.Log($"复制成功！账单ID:{currentBillID}");
@@ -198,6 +200,42 @@ public class DataManager : MonoBehaviour
 
             totalIncome += bill.amount;
         }
+    }
+    //计算存款
+    public void computeTotalDeposit(Bill bill)
+    {
+        if(bill.e_BillType == E_BillType.income)
+        {
+            allLedger.totalDeposit += bill.amount;
+        }else
+        {
+            allLedger.totalDeposit -= bill.amount;
+        }
+        UIManager.instance.RefreshTotalDeposit();
+    }
+    public void setTotalDeposit(float totalDeposit)
+    {
+        allLedger.totalDeposit = totalDeposit;
+    }
+    public float getTotalDeposit()
+    {
+        return allLedger.totalDeposit;
+    }
+    public void setOnlineFunds(float onlineFunds)
+    {
+        allLedger.onlineFunds = onlineFunds;
+    }
+    public float getOnlineFunds()
+    {
+        return allLedger.onlineFunds;
+    }
+    public void setCash(float cash)
+    {
+        allLedger.cash = cash;
+    }
+    public float getCash()
+    {
+        return allLedger.cash;
     }
 
     public void SetAllLedger(AllLedger allLedger)

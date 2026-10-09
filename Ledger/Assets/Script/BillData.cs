@@ -56,6 +56,9 @@ public class AllLedger
 {
     public int nextBillID;
     public List<MonthLedger> monthLedgerList;
+    public float totalDeposit;
+    public float onlineFunds;
+    public float cash;
     public AllLedger() { }
     public AllLedger(List<MonthLedger> monthLedgerList)
     {

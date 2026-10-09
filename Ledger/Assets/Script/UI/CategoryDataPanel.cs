@@ -70,6 +70,6 @@ public class CategoryDataPanel : MonoBehaviour
     }
     public void SetTipText(string categoryTag,float number)
     {
-        tipText.text = $"本月<u>{categoryTag}</u>累计花费<u>{number}</u>元。";
+        tipText.text = $"<cspace=-10>本月{categoryTag}累计消费</cspace>\n<size=120>￥</size><size=150>{number}</size>";
     }
 }
