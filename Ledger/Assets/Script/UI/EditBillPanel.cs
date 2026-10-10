@@ -63,6 +63,7 @@ public class EditBillPanel : MonoBehaviour
         string amountString = amountInputField.text;
         string remarkString = remarkInputField.text;
         bool isChange = false;
+        DataManager.instance.computeTotalDeposit(DataManager.instance.FindBill(), true);
         if(amountString != string.Empty)
         {
             isChange = true;
@@ -78,7 +79,7 @@ public class EditBillPanel : MonoBehaviour
             DataManager.instance.FindBill().e_BillCategory = categoryTagList.GetBillCategory();
             isChange = true;
         }
-        //尝试将输入解析为浮点数，成功即创建新记账条，失败则清空输入并提醒
+        DataManager.instance.computeTotalDeposit(DataManager.instance.FindBill(), false);
         if (isChange)
         {
             DataManager.SaveAllLedger();

@@ -108,9 +108,9 @@ public class UIManager : MonoBehaviour
 
     public void RefreshTotalDeposit()
     {
-        totalDepositText.text = $"{DataManager.instance.getTotalDeposit()}";
-        onlineFundsText.text = $"{DataManager.instance.getOnlineFunds()}";
-        cashText.text = $"{DataManager.instance.getCash()}";
+        totalDepositText.text = $"{DataManager.instance.getTotalDeposit():F2}";
+        onlineFundsText.text = $"{DataManager.instance.getOnlineFunds():F2}";
+        cashText.text = $"{DataManager.instance.getCash():F2}";
     }
 
     public void SetOperationPanelPosition(Vector3 originalPosition,bool upOrDown)

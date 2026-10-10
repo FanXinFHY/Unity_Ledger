@@ -338,10 +338,10 @@ MonoBehaviour:
   amountText: {fileID: 6494148971921097124}
   remarkText: {fileID: 6199449941095974106}
   operationButton: {fileID: 6419367883276782185}
-  otherIcon: {fileID: 21300000, guid: b55acb6399cfaf046a474fc69fbea4f3, type: 3}
-  foodAndDrinkIcon: {fileID: 21300000, guid: baff80f5d1dd31c45abed8610aadfbc5, type: 3}
-  accommodationIcon: {fileID: 21300000, guid: ff89e235de518994f8054a8fa481ed3d, type: 3}
-  entertainmentIcon: {fileID: 21300000, guid: 9bfcec484879045499c1de0764cfc3a4, type: 3}
+  otherIcon: {fileID: 21300000, guid: ba5b69567b4799b4996cbf876db84b90, type: 3}
+  foodAndDrinkIcon: {fileID: 21300000, guid: 6f736aa1dfcdba04f92018c7629a559b, type: 3}
+  accommodationIcon: {fileID: 21300000, guid: 9148fa9aaec5e5244b4055fb5e41daab, type: 3}
+  entertainmentIcon: {fileID: 21300000, guid: 7e0c6ace6962a1644a30476f6ff4960a, type: 3}
 --- !u!114 &5269513949025472896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,7 +733,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -4
+  m_characterSpacing: -10
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -824,14 +824,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.9764706, b: 0.69411767, a: 1}
+  m_Color: {r: 1, g: 0.70980394, b: 0.18039216, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: dda468076a6fe434a8731fabb6053562, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7516e5d1da8c9384ea967987416d9a64, type: 3}
   m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -964,14 +964,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.99215686, g: 0.9098039, b: 0.63529414, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b55acb6399cfaf046a474fc69fbea4f3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba5b69567b4799b4996cbf876db84b90, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

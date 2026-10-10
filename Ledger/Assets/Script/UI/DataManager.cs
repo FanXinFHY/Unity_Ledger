@@ -8,7 +8,8 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
 
-    private AllLedger allLedger;
+
+    [SerializeField] private AllLedger allLedger;
     public MonthLedger currentMonthLedger;
     public int currentBillID;
 
@@ -92,7 +93,7 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(GetSaveFilePath(), jsontext);
     }
 
-    //删除数据
+    //删除所有数据
     public void DeleteAllSaveData()
     {
         if (File.Exists(GetSaveFilePath()))
@@ -102,32 +103,16 @@ public class DataManager : MonoBehaviour
         }
         AppInit();
     }
-    public void DeleteCurrentBill()
-    {
-        int count = currentMonthLedger.billList.RemoveAll(bill => bill.ID == currentBillID);
-        if(count > 0)
-        {
-            SaveAllLedger(); 
-            SetAllLedger(LoadAllLedger());
-            Debug.Log($"删除成功！账单ID:{currentBillID}");
-
-            currentBillID = -1;
-            UIManager.instance.RefreshBillListContent();
-        }
-        else
-        {
-            Debug.Log("删除失败！");
-        }
-    }
+    
     //复制数据
     public void CopyCurrentBill()
     {
         Bill currentBill = FindBill();
         Bill copyBill = new Bill(GetBillID(),currentBill.e_BillType, currentBill.e_BillCategory,GetToMinute(),currentBill.amount,currentBill.remark);
         AddNewBill(copyBill);
-        //computeTotalDeposit(copyBill);
+
         SaveAllLedger();
-        SetAllLedger(LoadAllLedger());
+
         Debug.Log($"复制成功！账单ID:{currentBillID}");
 
         currentBillID = -1;
@@ -202,15 +187,20 @@ public class DataManager : MonoBehaviour
         }
     }
     //计算存款
-    public void computeTotalDeposit(Bill bill)
+
+    public void computeTotalDeposit(Bill bill,bool isDelete)
     {
-        if(bill.e_BillType == E_BillType.income)
+        //收入是加，支出是减
+        float amount = (bill.e_BillType == E_BillType.income) ? bill.amount : -bill.amount;
+        //删除时，反向影响总存款
+        if (isDelete)
         {
-            allLedger.totalDeposit += bill.amount;
-        }else
-        {
-            allLedger.totalDeposit -= bill.amount;
+            amount = -amount;
         }
+        //统一加到总存款
+        allLedger.totalDeposit += amount;
+        Debug.Log($"存款变动：￥{amount}");
+
         UIManager.instance.RefreshTotalDeposit();
     }
     public void setTotalDeposit(float totalDeposit)
@@ -262,9 +252,32 @@ public class DataManager : MonoBehaviour
     {
         this.currentBillID = newBillID;
     }
+    //创建新账单
     public void AddNewBill(Bill newBill)
     {
+        computeTotalDeposit(newBill, false);
         currentMonthLedger.billList.Add(newBill);
+    }
+    //删除账单
+    public void DeleteCurrentBill()
+    {
+        Bill bill = currentMonthLedger.billList.Find(bill => bill.ID == currentBillID);
+        if (bill != null)
+        {
+            computeTotalDeposit(bill, true);
+            currentMonthLedger.billList.Remove(bill);
+
+            SaveAllLedger();
+
+            Debug.Log($"删除成功！账单ID:{currentBillID}");
+
+            currentBillID = -1;
+            UIManager.instance.RefreshBillListContent();
+        }
+        else
+        {
+            Debug.Log("删除失败！");
+        }
     }
 
     #region 获取日期

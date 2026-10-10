@@ -30,7 +30,7 @@ public class BillItem : MonoBehaviour
         amountText.text = $"{bill.amount}";
         if(bill.e_BillType == E_BillType.income)
         {
-            amountText.color = new Color32(0x89, 0xD9, 0x68, 0xFF); ;
+            amountText.color = new Color32(0x89, 0xD9, 0x68, 0xFF); 
         }
         switch (bill.e_BillCategory)
         {
