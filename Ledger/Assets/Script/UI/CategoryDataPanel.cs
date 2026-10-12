@@ -33,11 +33,39 @@ public class CategoryDataPanel : MonoBehaviour
         SetTipText("吃喝", DataManager.instance.foodAndDrinkExpenses);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        UpdateTip();
     }
+
+    public void UpdateTip()
+    {
+        if(foodAndDrinkButton.transform.GetChild(0).gameObject.activeSelf == true)
+        {
+            SetBarTargetPercent(DataManager.instance.foodAndDrinkExpenses);
+            SetTipText("吃喝", DataManager.instance.foodAndDrinkExpenses);
+            return;
+        }
+        else if(accommodationButton.transform.GetChild(0).gameObject.activeSelf == true)
+        {
+            SetBarTargetPercent(DataManager.instance.accommodationExpenses);
+            SetTipText("住宿", DataManager.instance.accommodationExpenses);
+            return;
+        }
+        else if(entertainmentButton.transform.GetChild(0).gameObject.activeSelf == true)
+        {
+            SetBarTargetPercent(DataManager.instance.entertainmentExpenses);
+            SetTipText("娱乐", DataManager.instance.entertainmentExpenses);
+            return;
+        }
+        else if(otherButton.transform.GetChild(0).gameObject.activeSelf == true)
+        {
+            SetBarTargetPercent(DataManager.instance.otherExpenses);
+            SetTipText("其它", DataManager.instance.otherExpenses);
+            return;
+        }
+    }
+
     public void SetBarTargetPercent(float  categoryExpenses)
     {
         if (DataManager.instance.totalExpenses <= 0f)
@@ -57,19 +85,19 @@ public class CategoryDataPanel : MonoBehaviour
             x =>
             {
                 currentPercent = x;
-                percentText.text = $"{(x * 100f).ToString("F2")}%";
+                percentText.text = $"{(x * 100f):F2}%";
                 barImage.fillAmount = x;
             })
             .SetEase(Ease.OutQuad)
             .OnComplete(() =>
             {
                 currentPercent = targetPercent;
-                percentText.text = $"{(targetPercent * 100).ToString("F2")}%";
+                percentText.text = $"{(targetPercent * 100):F2}%";
                 barImage.fillAmount = targetPercent;
             });
     }
     public void SetTipText(string categoryTag,float number)
     {
-        tipText.text = $"<cspace=-10>本月{categoryTag}累计消费</cspace>\n<size=120>￥</size><size=150>{number}</size>";
+        tipText.text = $"<cspace=-10>本月{categoryTag}累计消费</cspace>\n<size=120>￥</size><size=150>{number:F2}</size>";
     }
 }
