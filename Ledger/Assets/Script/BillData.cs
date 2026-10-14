@@ -15,6 +15,10 @@ public enum E_BillCategory
     foodAndDrink,
     accommodation,
     entertainment,
+    salary,
+    transfer,
+    envelope,
+    sideJob,
 }
 
 [Serializable]

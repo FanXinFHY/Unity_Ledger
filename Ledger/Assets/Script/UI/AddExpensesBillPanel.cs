@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -15,6 +14,7 @@ public class AddExpensesBillPanel : MonoBehaviour
     public TMP_InputField remarkInputField;
     [Header("Other")]
     public CategoryTagList categoryTagList;
+
     void Start()
     {
         cancelButton.onClick.AddListener(CancelButton);
@@ -31,7 +31,8 @@ public class AddExpensesBillPanel : MonoBehaviour
     public void CancelButton()
     {
         amountInputField.text = string.Empty;
-        remarkInputField.text = string.Empty;   
+        remarkInputField.text = string.Empty;
+        categoryTagList.Reset();
         gameObject.SetActive(false);
     }
     public void ConfirmButton()

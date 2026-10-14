@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,17 +31,12 @@ public class EditBillPanel : MonoBehaviour
         SetDate();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SetDate()
     {
         Bill currentBill = DataManager.instance.FindBill();
         amountPlaceholderText.text = currentBill.amount.ToString();
         remarkPlaceholderText.text = currentBill.remark;
+        categoryTagList.DisplayCategoryTag(currentBill.e_BillType);
         e_BillCategory = currentBill.e_BillCategory;
         categoryTagList.SelecteBillCategory(e_BillCategory);
     }

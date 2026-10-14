@@ -18,6 +18,10 @@ public class BillItem : MonoBehaviour
     public Sprite foodAndDrinkIcon;
     public Sprite accommodationIcon;
     public Sprite entertainmentIcon;
+    public Sprite salaryIcon;
+    public Sprite sideJobIcon;
+    public Sprite transferIcon;
+    public Sprite envelopeIcon;
     public void Start()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -45,6 +49,18 @@ public class BillItem : MonoBehaviour
                 break;
             case E_BillCategory.entertainment:
                 tagIcon.sprite = entertainmentIcon;
+                break;
+            case E_BillCategory.salary:
+                tagIcon.sprite = salaryIcon;
+                break;
+            case E_BillCategory.sideJob:
+                tagIcon.sprite = sideJobIcon;
+                break;
+            case E_BillCategory.transfer:
+                tagIcon.sprite = transferIcon;
+                break;
+            case E_BillCategory.envelope:
+                tagIcon.sprite = envelopeIcon;
                 break;
             default:break;
         }

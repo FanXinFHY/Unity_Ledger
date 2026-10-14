@@ -20,6 +20,11 @@ public class DataManager : MonoBehaviour
     public float accommodationExpenses;
     public float entertainmentExpenses;
     public float otherExpenses;
+    public float salaryIncome;
+    public float sideJobIncome;
+    public float transferIncome;
+    public float envelopeIncome;
+    public float otherIncome;
 
 
 
@@ -159,7 +164,12 @@ public class DataManager : MonoBehaviour
         accommodationExpenses = 0;
         entertainmentExpenses = 0;
         otherExpenses = 0;
-        foreach(Bill bill in GetCurrentMonthLedger().billList)
+        salaryIncome = 0;
+        sideJobIncome = 0;
+        transferIncome = 0;
+        envelopeIncome = 0;
+        otherIncome = 0;
+        foreach (Bill bill in GetCurrentMonthLedger().billList)
         {
             if(bill.e_BillType == E_BillType.expenses)
             {
@@ -182,8 +192,32 @@ public class DataManager : MonoBehaviour
                 otherExpenses += bill.amount;
                 continue;
             }
-
-            totalIncome += bill.amount;
+            if (bill.e_BillType == E_BillType.income)
+            {
+                totalIncome += bill.amount;
+                if (bill.e_BillCategory == E_BillCategory.salary)
+                {
+                    salaryIncome += bill.amount;
+                    continue;
+                }
+                if (bill.e_BillCategory == E_BillCategory.sideJob)
+                {
+                    sideJobIncome += bill.amount;
+                    continue;
+                }
+                if (bill.e_BillCategory == E_BillCategory.transfer)
+                {
+                    transferIncome += bill.amount;
+                    continue;
+                }
+                if (bill.e_BillCategory == E_BillCategory.envelope)
+                {
+                    envelopeIncome += bill.amount;
+                    continue;
+                }
+                otherIncome += bill.amount;
+                continue;
+            }
         }
     }
     //计算存款
@@ -199,7 +233,6 @@ public class DataManager : MonoBehaviour
         }
         //统一加到总存款
         allLedger.totalDeposit += amount;
-        Debug.Log($"存款变动：￥{amount}");
 
         UIManager.instance.RefreshTotalDeposit();
     }

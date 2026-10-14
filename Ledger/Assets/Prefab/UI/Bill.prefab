@@ -342,6 +342,10 @@ MonoBehaviour:
   foodAndDrinkIcon: {fileID: 21300000, guid: 6f736aa1dfcdba04f92018c7629a559b, type: 3}
   accommodationIcon: {fileID: 21300000, guid: 9148fa9aaec5e5244b4055fb5e41daab, type: 3}
   entertainmentIcon: {fileID: 21300000, guid: 7e0c6ace6962a1644a30476f6ff4960a, type: 3}
+  salaryIcon: {fileID: 21300000, guid: 4202f656550a8e34e8666a083909af86, type: 3}
+  sideJobIcon: {fileID: 21300000, guid: f66045897d1c7a940918e9b124fbb43d, type: 3}
+  transferIcon: {fileID: 21300000, guid: 35f73cd827c22ac439d84bc57bcba14c, type: 3}
+  envelopeIcon: {fileID: 21300000, guid: 3a449c07e1e97094682001d7026bc7e0, type: 3}
 --- !u!114 &5269513949025472896
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -32,6 +32,7 @@ public class AddIncomeBillPanel : MonoBehaviour
     {
         amountInputField.text = string.Empty;
         remarkInputField.text = string.Empty;
+        categoryTagList.Reset();
         gameObject.SetActive(false);
     }
     public void ConfirmButton()
