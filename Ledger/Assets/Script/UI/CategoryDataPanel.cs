@@ -13,7 +13,7 @@ public class CategoryDataPanel : MonoBehaviour
     public Button expensesTypeButton;
     public Button incomeTypeButton;
 
-    public Button foodAndExpensesDrinkButton;
+    public Button foodAndDrinkExpensesButton;
     public Button accommodationExpensesButton;
     public Button entertainmentExpensesButton;
     public Button otherExpensesButton;
@@ -24,6 +24,17 @@ public class CategoryDataPanel : MonoBehaviour
     public Button envelopeIncomeButton;
     public Button otherIncomeButton;
 
+    [Header("LuGameObject")]
+    public GameObject currentLuGameObject;
+    public GameObject foodAndDrinkLu;
+    public GameObject accommodationLu;
+    public GameObject entertainmentLu;
+    public GameObject salaryLu;
+    public GameObject sideJobLu;
+    public GameObject transferLu;
+    public GameObject envelopeLu;
+    public GameObject otherLu;
+
     [Header("Text")]
     public TextMeshProUGUI percentText;
     public TextMeshProUGUI tipText;
@@ -32,6 +43,13 @@ public class CategoryDataPanel : MonoBehaviour
     private Tween numberTween;
     private float currentPercent;
 
+    private void Awake()
+    {
+        currentBillTypeButton = expensesTypeButton;
+        currentExpensesButton = foodAndDrinkExpensesButton;
+        currentIncomeButton = salaryIncomeButton;
+        currentLuGameObject = foodAndDrinkLu;
+    }
     void Start()
     {
         expensesTypeButton.onClick.AddListener(() => SetCurrentBillTypeButton(E_BillType.expenses, expensesTypeButton));
@@ -39,7 +57,7 @@ public class CategoryDataPanel : MonoBehaviour
         expensesTypeButton.onClick.AddListener(() => UpdateTip());
         incomeTypeButton.onClick.AddListener(() => UpdateTip());
 
-        foodAndExpensesDrinkButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses,foodAndExpensesDrinkButton));
+        foodAndDrinkExpensesButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses,foodAndDrinkExpensesButton));
         accommodationExpensesButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses, accommodationExpensesButton));
         entertainmentExpensesButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses, entertainmentExpensesButton));
         otherExpensesButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses, otherExpensesButton));
@@ -50,11 +68,8 @@ public class CategoryDataPanel : MonoBehaviour
         envelopeIncomeButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.income, envelopeIncomeButton));
         otherIncomeButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.income, otherIncomeButton));
 
-        SetBarTargetPercent(E_BillType.expenses, DataManager.instance.foodAndDrinkExpenses, "吃喝");
+        SetViewData(E_BillType.expenses, DataManager.instance.foodAndDrinkExpenses, "吃喝");
 
-        currentBillTypeButton = expensesTypeButton;
-        currentExpensesButton = foodAndExpensesDrinkButton;
-        currentIncomeButton = salaryIncomeButton;
     }
 
     private void OnEnable()
@@ -88,65 +103,66 @@ public class CategoryDataPanel : MonoBehaviour
     }
     public void UpdateTip()
     {
+        currentLuGameObject.SetActive(false);
         if (currentBillTypeButton == expensesTypeButton)
         {
-            if (currentExpensesButton == foodAndExpensesDrinkButton)
+            if (currentExpensesButton == foodAndDrinkExpensesButton)
             {
-                SetBarTargetPercent(E_BillType.expenses, DataManager.instance.foodAndDrinkExpenses, "吃喝");
-                return;
+                currentLuGameObject = foodAndDrinkLu;
+                SetViewData(E_BillType.expenses, DataManager.instance.foodAndDrinkExpenses, "吃喝");
             }
             else if (currentExpensesButton == accommodationExpensesButton)
             {
-                SetBarTargetPercent(E_BillType.expenses, DataManager.instance.accommodationExpenses, "住宿");
-                return;
+                currentLuGameObject = accommodationLu;
+                SetViewData(E_BillType.expenses, DataManager.instance.accommodationExpenses, "住宿");
             }
             else if (currentExpensesButton == entertainmentExpensesButton)
             {
-                SetBarTargetPercent(E_BillType.expenses, DataManager.instance.entertainmentExpenses, "娱乐");
-                return;
+                currentLuGameObject = entertainmentLu;
+                SetViewData(E_BillType.expenses, DataManager.instance.entertainmentExpenses, "娱乐");
             }
             else if (currentExpensesButton == otherExpensesButton)
             {
-                SetBarTargetPercent(E_BillType.expenses, DataManager.instance.otherExpenses, "其它");
-                return;
+                currentLuGameObject = otherLu;
+                SetViewData(E_BillType.expenses, DataManager.instance.otherExpenses, "其它");
             }
         }
         else
         {
             if (currentIncomeButton == salaryIncomeButton)
             {
-                SetBarTargetPercent(E_BillType.income, DataManager.instance.salaryIncome, "工资");
-                return;
+                currentLuGameObject = salaryLu;
+                SetViewData(E_BillType.income, DataManager.instance.salaryIncome, "工资");
             }
             else if (currentIncomeButton == sideJobIncomeButton)
             {
-                SetBarTargetPercent(E_BillType.income, DataManager.instance.sideJobIncome, "副业");
-                return;
+                currentLuGameObject = sideJobLu;
+                SetViewData(E_BillType.income, DataManager.instance.sideJobIncome, "副业");
             }
             else if (currentIncomeButton == transferIncomeButton)
             {
-                SetBarTargetPercent(E_BillType.income, DataManager.instance.transferIncome, "转账");
-                return;
+                currentLuGameObject = transferLu;
+                SetViewData(E_BillType.income, DataManager.instance.transferIncome, "转账");
             }
             else if (currentIncomeButton == envelopeIncomeButton)
             {
-                SetBarTargetPercent(E_BillType.income, DataManager.instance.envelopeIncome, "红包");
-                return;
+                currentLuGameObject = envelopeLu;
+                SetViewData(E_BillType.income, DataManager.instance.envelopeIncome, "红包");
             }
             else if (currentIncomeButton == otherIncomeButton)
             {
-                SetBarTargetPercent(E_BillType.income, DataManager.instance.otherIncome, "其它");
-                return;
+                currentLuGameObject = otherLu;
+                SetViewData(E_BillType.income, DataManager.instance.otherIncome, "其它");
             }
         }
-
+        currentLuGameObject.SetActive(true);
     }
-    public void SetBarTargetPercent(E_BillType e_BillType,float  amount, string categoryTag)
+    public void SetViewData(E_BillType e_BillType,float  amount, string categoryTag)
     {
         float totalAmount = 0;
         if(e_BillType == E_BillType.expenses)
         {
-            tipText.text = $"<cspace=-10>本月{categoryTag}累计消费</cspace>\n<size=120>￥</size><size=150>{amount:F2}</size>";
+            tipText.text = $"<cspace=-10>本月<u>{categoryTag}</u>累计消费</cspace>\n<size=120>￥</size><size=150>{amount:F2}</size>";
             if (DataManager.instance.totalExpenses <= 0f)
             {
                 numberTween?.Kill();
@@ -158,7 +174,7 @@ public class CategoryDataPanel : MonoBehaviour
             totalAmount = DataManager.instance.totalExpenses;
         }else
         {
-            tipText.text = $"<cspace=-10>本月{categoryTag}累计入账</cspace>\n<size=120>￥</size><size=150>{amount:F2}</size>";
+            tipText.text = $"<cspace=-10>本月<u>{categoryTag}</u>累计入账</cspace>\n<size=120>￥</size><size=150>{amount:F2}</size>";
             if (DataManager.instance.totalIncome <= 0f)
             {
                 numberTween?.Kill();
