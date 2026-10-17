@@ -16,6 +16,7 @@ public class CategoryDataPanel : MonoBehaviour
     public Button foodAndDrinkExpensesButton;
     public Button accommodationExpensesButton;
     public Button entertainmentExpensesButton;
+    public Button healthcareExpensesButton;
     public Button otherExpensesButton;
 
     public Button salaryIncomeButton;
@@ -29,6 +30,7 @@ public class CategoryDataPanel : MonoBehaviour
     public GameObject foodAndDrinkLu;
     public GameObject accommodationLu;
     public GameObject entertainmentLu;
+    public GameObject healthcareLu;
     public GameObject salaryLu;
     public GameObject sideJobLu;
     public GameObject transferLu;
@@ -60,6 +62,7 @@ public class CategoryDataPanel : MonoBehaviour
         foodAndDrinkExpensesButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses,foodAndDrinkExpensesButton));
         accommodationExpensesButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses, accommodationExpensesButton));
         entertainmentExpensesButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses, entertainmentExpensesButton));
+        healthcareExpensesButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses, healthcareExpensesButton));
         otherExpensesButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.expenses, otherExpensesButton));
 
         salaryIncomeButton.onClick.AddListener(() => SetCurrentCategoryButton(E_BillType.income, salaryIncomeButton));
@@ -120,6 +123,11 @@ public class CategoryDataPanel : MonoBehaviour
             {
                 currentLuGameObject = entertainmentLu;
                 SetViewData(E_BillType.expenses, DataManager.instance.entertainmentExpenses, "娱乐");
+            }
+            else if (currentExpensesButton == healthcareExpensesButton)
+            {
+                currentLuGameObject = healthcareLu;
+                SetViewData(E_BillType.expenses, DataManager.instance.healthcareExpenses, "医疗");
             }
             else if (currentExpensesButton == otherExpensesButton)
             {

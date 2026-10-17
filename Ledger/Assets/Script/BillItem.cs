@@ -18,6 +18,7 @@ public class BillItem : MonoBehaviour
     public Sprite foodAndDrinkIcon;
     public Sprite accommodationIcon;
     public Sprite entertainmentIcon;
+    public Sprite healthcareIcon;
     public Sprite salaryIcon;
     public Sprite sideJobIcon;
     public Sprite transferIcon;
@@ -49,6 +50,9 @@ public class BillItem : MonoBehaviour
                 break;
             case E_BillCategory.entertainment:
                 tagIcon.sprite = entertainmentIcon;
+                break;
+            case E_BillCategory.healthcare:
+                tagIcon.sprite = healthcareIcon;
                 break;
             case E_BillCategory.salary:
                 tagIcon.sprite = salaryIcon;

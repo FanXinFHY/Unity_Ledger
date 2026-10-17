@@ -15,6 +15,7 @@ public enum E_BillCategory
     foodAndDrink,
     accommodation,
     entertainment,
+    healthcare,
     salary,
     transfer,
     envelope,

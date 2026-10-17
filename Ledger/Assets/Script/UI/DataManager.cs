@@ -19,6 +19,7 @@ public class DataManager : MonoBehaviour
     public float foodAndDrinkExpenses;
     public float accommodationExpenses;
     public float entertainmentExpenses;
+    public float healthcareExpenses;
     public float otherExpenses;
     public float salaryIncome;
     public float sideJobIncome;
@@ -163,6 +164,7 @@ public class DataManager : MonoBehaviour
         foodAndDrinkExpenses = 0;
         accommodationExpenses = 0;
         entertainmentExpenses = 0;
+        healthcareExpenses = 0;
         otherExpenses = 0;
         salaryIncome = 0;
         sideJobIncome = 0;
@@ -187,6 +189,11 @@ public class DataManager : MonoBehaviour
                 if (bill.e_BillCategory == E_BillCategory.entertainment)
                 {
                     entertainmentExpenses += bill.amount;
+                    continue;
+                }
+                if (bill.e_BillCategory == E_BillCategory.healthcare)
+                {
+                    healthcareExpenses += bill.amount;
                     continue;
                 }
                 otherExpenses += bill.amount;

@@ -8,6 +8,7 @@ public class CategoryTagList : MonoBehaviour
     public GameObject foodAndDrink;
     public GameObject accommodation;
     public GameObject entertainment;
+    public GameObject healthcare;
     public GameObject salary;
     public GameObject sideJob;
     public GameObject transfer;
@@ -19,6 +20,7 @@ public class CategoryTagList : MonoBehaviour
         if (foodAndDrink.activeSelf) return E_BillCategory.foodAndDrink;
         if (accommodation.activeSelf) return E_BillCategory.accommodation;
         if (entertainment.activeSelf) return E_BillCategory.entertainment;
+        if (healthcare.activeSelf) return E_BillCategory.healthcare;
         if (salary.activeSelf) return E_BillCategory.salary;
         if (sideJob.activeSelf) return E_BillCategory.sideJob;
         if (transfer.activeSelf) return E_BillCategory.transfer;
@@ -40,6 +42,11 @@ public class CategoryTagList : MonoBehaviour
         if (billCategory == E_BillCategory.entertainment)
         {
             entertainment.SetActive(true);
+            return;
+        }
+        if (billCategory == E_BillCategory.healthcare)
+        {
+            healthcare.SetActive(true);
             return;
         }
         if (billCategory == E_BillCategory.salary)
@@ -72,6 +79,7 @@ public class CategoryTagList : MonoBehaviour
             foodAndDrink.transform.parent.gameObject.SetActive(true);
             accommodation.transform.parent.gameObject.SetActive(true);
             entertainment.transform.parent.gameObject.SetActive(true);
+            healthcare.transform.parent.gameObject.SetActive(true);
             salary.transform.parent.gameObject.SetActive(false);
             sideJob.transform.parent.gameObject.SetActive(false);
             transfer.transform.parent.gameObject.SetActive(false);
@@ -81,6 +89,7 @@ public class CategoryTagList : MonoBehaviour
             foodAndDrink.transform.parent.gameObject.SetActive(false);
             accommodation.transform.parent.gameObject.SetActive(false);
             entertainment.transform.parent.gameObject.SetActive(false);
+            healthcare.transform.parent.gameObject.SetActive(false);
             salary.transform.parent.gameObject.SetActive(true);
             sideJob.transform.parent.gameObject.SetActive(true);
             transfer.transform.parent.gameObject.SetActive(true);
@@ -92,6 +101,7 @@ public class CategoryTagList : MonoBehaviour
         foodAndDrink.SetActive(false);
         accommodation.SetActive(false);
         entertainment.SetActive(false);
+        healthcare.SetActive(false);
         salary.SetActive(false);
         sideJob.SetActive(false);
         transfer.SetActive(false);
